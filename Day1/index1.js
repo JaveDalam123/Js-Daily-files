@@ -16,3 +16,4 @@ console.log(num1);
 const num2=60;
 // num2=80;
 console.log(num2);
+console.log("checking hown to commit on git");
