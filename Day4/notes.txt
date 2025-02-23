@@ -1,0 +1,207 @@
+DAY1
+
+1. Difference Between == and === Operators
+== (Abstract Equality) checks only values and does type coercion if needed.
+=== (Strict Equality) checks both value and type (no type conversion).
+Example:
+console.log(5 == "5");  // true (string "5" is converted to number 5)
+console.log(5 === "5"); // false (different types: number vs. string)
+
+console.log(true == 1);  // true (true is converted to 1)
+console.log(true === 1); // false (boolean vs. number)
+
+
+2. Differences Between var, let, and const
+Feature	var	let	const
+Scope	Function Scope	Block Scope	Block Scope
+Re-declaration	Allowed	Not Allowed	Not Allowed
+Re-assignment	Allowed	Allowed	Not Allowed
+Hoisting	Hoisted with undefined	Hoisted but not initialized	Hoisted but not initialized
+Example:
+
+
+// var example (function scope)
+function testVar() {
+  var x = 10;
+  if (true) {
+    var x = 20; // Overwrites x within the function
+    console.log(x); // 20
+  }
+  console.log(x); // 20 (same variable)
+}
+testVar();
+
+// let example (block scope)
+function testLet() {
+  let y = 10;
+  if (true) {
+    let y = 20; // Different variable (block-scoped)
+    console.log(y); // 20
+  }
+  console.log(y); // 10 (original value)
+}
+testLet();
+
+// const example (constant, block-scoped)
+function testConst() {
+  const z = 30;
+  // z = 40; // ❌ Error: Assignment to constant variable
+  console.log(z);
+}
+testConst();
+
+
+3. What is Execution Context?
+Execution Context is the environment in which JavaScript code is executed.
+
+Types of Execution Contexts:
+
+Global Execution Context (GEC) - Created by default when JavaScript starts.
+Function Execution Context (FEC) - Created whenever a function is called.
+Eval Execution Context - Created when eval() is used (not recommended).
+Example:
+console.log("Start");
+
+function first() {
+  console.log("Inside first function");
+  second();
+}
+
+function second() {
+  console.log("Inside second function");
+}
+
+first(); 
+console.log("End");
+
+// Execution Context Flow:
+// 1. Global Execution Context (GEC) created
+// 2. `first()` is called → New Function Execution Context (FEC) created
+// 3. `second()` is called → New FEC created
+// 4. Execution completes and contexts are removed (LIFO - Last In, First Out)
+
+
+4. What are the Creation Phase and Execution Phase?
+When JavaScript executes a function, it follows two phases:
+
+1. Creation Phase (Memory Allocation)
+Memory is allocated for variables and functions.
+Variables declared with var are initialized as undefined.
+let and const are hoisted but remain uninitialized.
+2. Execution Phase
+JavaScript executes the code line by line.
+Variables get assigned their actual values.
+Example:
+console.log(a); // undefined (due to hoisting)
+console.log(b); // ❌ ReferenceError (not initialized yet)
+
+var a = 10;  
+let b = 20;
+console.log(a, b); // 10, 20
+In the Creation Phase:
+a is set to undefined (because of var).
+b is declared but not initialized (due to let).
+In the Execution Phase:
+a gets the value 10, and b gets 20.
+
+
+5. What is Hoisting?
+Hoisting is JavaScript’s behavior of moving variable and function declarations to the top of their scope before execution.
+
+Example:
+console.log(x); // undefined (hoisted but not assigned)
+var x = 5;
+console.log(x); // 5
+With let and const, hoisting works differently:
+
+console.log(y); // ❌ ReferenceError: Cannot access 'y' before initialization
+let y = 10;
+var variables are hoisted with undefined.
+let and const are hoisted but not initialized.
+
+
+6. Difference Between undefined, not defined, and NaN
+Concept	Meaning	Example
+undefined	Variable declared but not assigned a value	let x; console.log(x); // undefined
+not defined	Variable never declared	console.log(y); // ReferenceError: y is not defined
+NaN (Not a Number)	Result of an invalid math operation	console.log("hello" * 2); // NaN
+Example:
+
+let a;
+console.log(a); // undefined
+
+console.log(b); // ❌ ReferenceError: b is not defined
+
+console.log("abc" / 2); // NaN (invalid math operation)
+
+
+7. How Many Operators Do We Have in JavaScript?
+JavaScript has several operators:
+
+Arithmetic Operators (+, -, *, /, %, **)
+Assignment Operators (=, +=, -=, *=, /=)
+Comparison Operators (==, ===, !=, !==, >, <, >=, <=)
+Logical Operators (&&, ||, !)
+Bitwise Operators (&, |, ^, ~, <<, >>)
+Ternary Operator (condition ? value1 : value2)
+Type Operators (typeof, instanceof)
+Nullish Coalescing Operator (??)
+Example:
+
+
+let x = 10, y = 5;
+console.log(x + y);  // 15 (Arithmetic)
+console.log(x > y);  // true (Comparison)
+console.log(x && y); // 5 (Logical)
+console.log(x ?? y); // 10 (Nullish Coalescing)
+
+
+8. Explain Local Scope, Block Scope, Functional Scope, and Scope Chain
+1. Local Scope
+Variables declared inside a function are only accessible inside that function.
+
+function test() {
+  let localVar = "I'm local";
+  console.log(localVar);
+}
+test();
+// console.log(localVar); // ❌ Error: localVar is not defined
+2. Block Scope
+Variables declared with let or const inside {} are block-scoped.
+js
+Copy
+Edit
+{
+  let blockVar = "Inside block";
+  console.log(blockVar);
+}
+// console.log(blockVar); // ❌ Error: blockVar is not defined
+3. Functional Scope
+Variables declared with var are function-scoped.
+
+function funcScope() {
+  var functionVar = "Function scoped";
+}
+funcScope();
+// console.log(functionVar); // ❌ Error: functionVar is not defined
+4. Scope Chain
+JavaScript searches variables from the current scope upwards to the global scope.
+js
+Copy
+Edit
+let globalVar = "I am global";
+
+function outer() {
+  let outerVar = "I am outer";
+  
+  function inner() {
+    let innerVar = "I am inner";
+    console.log(globalVar); // ✅ Accessible
+    console.log(outerVar);  // ✅ Accessible
+    console.log(innerVar);  // ✅ Accessible
+  }
+  
+  inner();
+}
+outer();
+If a variable is not found in the current scope, JavaScript looks in the parent scope until it reaches the global scope.
